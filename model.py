@@ -184,8 +184,56 @@ main_output = Dense(3, activation='softmax', name='main_output')(merged_vector)
 
 model = Model(inputs=[senA, senB], outputs=[main_output])
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy',  metrics=['accuracy'])
-model.fit([vecAtrain, vecBtrain], [y_train], validation_data=([vecAtest, vecBtest], y_test),verbose=1, epochs=25, batch_size=32)
+model.fit([vecAtrain, vecBtrain], [y_train], validation_data=([vecAtest, vecBtest], y_test),verbose=1, epochs=10, batch_size=32)
 
+
+while(True):
+
+	# print(char_indices)
+
+	text1 = input("Type sentence A: ")
+	text2 = input("Type sentence B: ")
+	
+
+	vecA = []
+	vecB = []
+
+	for i in range(1):
+		embeddedVecA = []
+		embeddedVecB = []
+		for word in text1.split():
+			#print(word, char_indices.get(word))
+			embeddedVecA.append(char_indices.get(word.lower()))
+
+		for word in text2.split():
+			embeddedVecB.append(char_indices.get(word.lower()))
+
+		embeddedVecA +=  [0]*(40 - len(embeddedVecA))
+		embeddedVecB +=  [0]*(40 - len(embeddedVecB))
+
+		vecA.append(embeddedVecA)
+		vecB.append(embeddedVecB)
+
+	vecA = np.array(vecA)
+	vecA = vecA.reshape(1,40)
+	vecB = np.array(vecB)
+	vecB = vecB.reshape(1,40)
+
+	print(vecA.shape)
+	print(vecB.shape)
+
+	print(vecA[0])
+	print(vecB[0])
+	result = model.predict([vecA, vecB])
+	print(result)
+	index = np.argmax(result)
+
+	if index == 0:
+		print("CONTRADICTION")
+	if index == 1:
+		print("ENTAILMENT")
+	if index == 2:
+		print("NEUTRAL")
 
 
 # embedding_vecor_length = 32
