@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 
 browser = webdriver.Chrome()
 burl = u'https://twitter.com/search?'
-query = 'narendra modi hot pics'
+query = 'narendra modi election'
 processedquery = urllib.parse.urlencode({'q':query})
 
 browser.get(burl+processedquery)
@@ -33,5 +33,3 @@ for i in range(len(tweets)):
 # 	print('= = =')
 # 	print(unames.text)
 # 	print(tweet.text)
-
-
